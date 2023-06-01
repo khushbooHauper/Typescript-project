@@ -1,13 +1,161 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  font-family: 'lato', sans-serif;
+  background: rgb(206,246,249);
+  background: linear-gradient(90deg, rgba(206,246,249,1) 22%, rgba(81,208,233,1) 100%);
+  color:#0a98a2;
+  overflow-x: hidden;
+ }
+ 
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.error {
+  color: rgb(179, 20, 20);
+}
+
+.searchfilter {
+  margin-left: 46px;
+  padding: 10px;
+  color: #3f51b5;
+  font-size: 14px;
+}
+
+.education-edit {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.d-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.education-fields {
+  padding: 25px;
+}
+
+
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    font-size: 10px;
+  }
+  .MuiTableCell-head {
+    color: rgba(0, 0, 0, 0.87);
+    font-weight: 700;
+    line-height: 1.5rem;
+}
+.side-by-side{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.flex-right-button{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 120px;
+}
+.flex-right{
+  display: flex;
+  justify-content: flex-end;
+ 
+}
+.submission-message{
+  text-align: center;
+  margin-top: 150px;
+}
+.flex-right-button-education{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 250px;
+}
+.plus-fielarray-flex{
+  display: flex;
+}
+.success-message{
+  margin: auto;
+  display: block;
+}
+
+/* homepage styling */
+
+
+
+/* .header {
+  background-color:#333333;
+}
+
+.container-2 {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.jumbotron {
+  background: url(https://s3.amazonaws.com/codecademy-content/projects/broadway/bg.jpg);
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
+  height: 540px;
+  width: 1300px;
+}
+
+
+.main {
+  position: relative;
+  top: 180px;
+  text-align: center;
+}
+
+.main h1 {
+  color: #333;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-size: 70px;
+  margin-top: 0;
+  margin-bottom: 80px;
+  text-transform: uppercase;
+}
+
+.btn-main {
+  background-color: #333;
+  color: #fff;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 1.3px;
+  padding: 16px 40px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.btn-default {
+  color:#333;
+  border:1px solid #333333;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 1.3px;
+  padding: 10px 20px;
+  text-decoration: none;
+  text-transform: uppercase;  
+  display: inline-block;
+  margin-bottom: 20px; 
+  padding-right:50px;
+  padding-left:50px;
+}
+
+
+@media (max-width: 500px) {
+  .main h1 {
+    font-size: 50px;
+    padding: 0 40px;
+  }
+
+  
+} */
