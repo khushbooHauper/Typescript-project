@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -9,20 +9,32 @@ import { PersonalDetails } from './steps/PersonalDetails';
 import { Education } from './steps/Education';
 import { Experience } from './steps/Experience';
 import { BankDetails } from './steps/BankDetails';
+import { BankDetailsData, EducationData, ExperienceData, PersonalDetailsData, User } from '../../Types';
 
-
+  
+  
+  interface StepperContainerProps {
+    addUser: (user: User) => void;
+    handleClose: () => void;
+    id: number;
+    curUser: User | null | {};
+    editMode: boolean;
+    users: User[];
+    setUsers: Dispatch<SetStateAction<User[]>>;
+  }
 
 const steps = ['PersonalDetails', 'BankDetails', 'Education', 'Experience'];
 
-export default function StepperContainer({ addUser, handleClose, id, curUser,editMode ,users,setUsers}) {
+export default function StepperContainer({ addUser, handleClose, id, curUser,editMode ,users,setUsers}:StepperContainerProps) {
 
     ///+++++
-    const [curRecord, setCurRecord] = React.useState(curUser || {})
-    const [allowedNext, setAllowNext] = React.useState(false)
-    const [activeStep, setActiveStep] = React.useState(0);
+    const [curRecord, setCurRecord] = useState<User | {}>(curUser || {});
+
+    const [allowedNext, setAllowNext] = useState<boolean>(false);
+    const [activeStep, setActiveStep] = useState<number>(0);
     console.log("curRecord", curRecord)
 
-    const onSuccess = React.useCallback((data, node) => {
+    const onSuccess = useCallback((data:object, node:string) => {
 
         // setCurRecord((curRecord)=>{
         //     if(curRecord[node].validated){
@@ -33,18 +45,19 @@ export default function StepperContainer({ addUser, handleClose, id, curUser,edi
         //     t[node].validated=true;
         //     return t;
         // })
+        
         switch (activeStep) {
-            case 0: curRecord.PersonalDetails = data; break;
-            case 1: curRecord.BankDetails = data; break;
-            case 2: curRecord.Education = data; break;
-            case 3: curRecord.Experience = data; break;
+            case 0:(curRecord as User).PersonalDetails = data as PersonalDetailsData; break;
+            case 1: (curRecord as User).BankDetails = data as BankDetailsData; break;
+            case 2: (curRecord as User).Education = data as EducationData; break;
+            case 3: (curRecord as User).Experience = data as ExperienceData; break;
 
         }
         console.log("on success got this data", data)
         setAllowNext(true)
     }, [activeStep])
 
-    const onError = React.useCallback((data) => {
+    const onError = useCallback((data:object) => {
         console.log("on error got this data", data)
         setAllowNext(false)
     }, [])
@@ -54,9 +67,9 @@ export default function StepperContainer({ addUser, handleClose, id, curUser,edi
     const handleNext = () => {
         if (allowedNext) {
             if (activeStep === steps.length - 1) {
-                const newUser = { ...curRecord, id: id + 1 };
+                const newUser:User = { ...curRecord, id: id + 1 };
                 setCurRecord(newUser);
-                addUser(curRecord);
+                addUser(curRecord as User);
                 handleClose()
             } else {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -68,9 +81,9 @@ export default function StepperContainer({ addUser, handleClose, id, curUser,edi
 
     const handleUpdate = () => {
         const updatedUsers =users && users.map((user) =>
-            user.id === curRecord.id ? curRecord : user
+            user.id ===  (curRecord as User).id ? curRecord : user
         );
-        setUsers(updatedUsers);
+        setUsers(updatedUsers as User[]);
         localStorage.setItem('users', JSON.stringify(updatedUsers));
         handleClose()
     };
@@ -95,29 +108,30 @@ export default function StepperContainer({ addUser, handleClose, id, curUser,edi
                     );
                 })}
             </Stepper>
-            <Box sx={{ minHeight: '400px', overflowY: 'auto' }} >
+            <div style={{maxHeight:'400px',overflowY:'auto'}}>
+            <Box>
                 {(() => {
                     switch (activeStep) {
                         case 0:
                             return <PersonalDetails
                                 onSuccess={onSuccess}
                                 onError={onError}
-                                formData={curRecord.PersonalDetails} />;
+                                formData={(curRecord as User)?.PersonalDetails as PersonalDetailsData} />;
                         case 1:
                             return <BankDetails
                                 onSuccess={onSuccess}
                                 onError={onError}
-                                formData={curRecord.BankDetails} />;
+                                formData={(curRecord as User)?.BankDetails as BankDetailsData} />;
                         case 2:
                             return <Education
                                 onSuccess={onSuccess}
                                 onError={onError}
-                                formData={curRecord.Education} />;
+                                formData={(curRecord as User)?.Education as EducationData} />;
                         case 3:
                             return <Experience
                                 onSuccess={onSuccess}
                                 onError={onError}
-                                formData={curRecord.Experience}
+                                formData={(curRecord as User)?.Experience as ExperienceData}
                             />;
                         default:
                             return null;
@@ -155,6 +169,7 @@ export default function StepperContainer({ addUser, handleClose, id, curUser,edi
                     </Box>
                 
             )}
+            </div>
         </Box>
     );
 }

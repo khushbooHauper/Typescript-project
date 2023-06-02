@@ -4,7 +4,7 @@ import SearchFilter from '../Components/Filter';
 import ModaL from '../Components/ModaL';
 import '../css/Layout.css';
 import { TablE } from '../Components/Table';
-
+import { PersonalDetailsData, User } from '../Types';
 
 
 
@@ -12,18 +12,18 @@ import { TablE } from '../Components/Table';
 function Layout() {
   const storedUsers = localStorage.getItem('users');
   const hasStoredUsers = storedUsers !== null;
-  const [hasUsers, setHasUsers] = useState(hasStoredUsers);
-  const [users, setUsers] = useState(() => {
+  const [hasUsers, setHasUsers] = useState<boolean>(hasStoredUsers);
+  const [users, setUsers] = useState<User[]>(() => {
     return hasStoredUsers ? JSON.parse(storedUsers) : [];
   });
-  const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState("");
-  const [curRecord, setCurRecord] = useState(null)
-  const [showTable, setShowTable] = useState(false);
-  const [showFilter, setShowFilter] = useState(false);
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [page, setPage] = useState<number>(1);
+  const [filter, setFilter] = useState<string>("");
+  const [curRecord, setCurRecord] = useState<User | null>(null);
+  const [showTable, setShowTable] = useState<boolean>(false);
+  const [showFilter, setShowFilter] = useState<boolean>(false);
+  const [isButtonClicked, setIsButtonClicked] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
 
 
@@ -40,11 +40,11 @@ function Layout() {
 
 
 
-  const filteredList = users && users.filter((user) => {
+  const filteredList = users && users.filter((user:User) => {
     const personalDetails = user.PersonalDetails;
-    const age = moment().diff(personalDetails.dob, 'years');
+    const age = moment().diff((personalDetails as PersonalDetailsData).dob, 'years');
 
-    return Object.values(personalDetails).some((value) =>
+    return Object.values(personalDetails as PersonalDetailsData).some((value) =>
       value && value.toString().toLowerCase().includes(filter.toLowerCase())
     ) || age.toString().toLowerCase().includes(filter.toLowerCase());
   });
@@ -57,7 +57,7 @@ function Layout() {
 
 
 
-  const addUser = (user) => {
+  const addUser = (user:User) => {
     const updatedUsers = [...users]; // Create a deep copy of the users array
 
     if (user.id === users.length + 1) {
@@ -89,7 +89,7 @@ function Layout() {
     return curRecord;
   }, [curRecord, users])
 
-  const handleEdit = useCallback((user) => {
+  const handleEdit = useCallback((user:User) => {
     setOpen(true);
     setEditMode(true);
     setCurRecord(user);
@@ -112,8 +112,8 @@ function Layout() {
       {users.length > 0 ? (<div className='second-part'>
        <h2>Employee List</h2>
         <div className='align-inline-box'>
-        <SearchFilter setPage={setPage} filter={filter} setFilter={setFilter} className='searchfilter-margin-auto' />
-        <ModaL isButtonClicked={isButtonClicked} open={open} handleClose={handleClose} users={users} setUsers={setUsers} addUser={addUser} id={users.length} curUser={default_record} editMode={editMode} handleAddUserClick={handleAddUserClick} />
+        <SearchFilter setPage={setPage} filter={filter} setFilter={setFilter} />
+        <ModaL open={open} handleClose={handleClose} users={users} setUsers={setUsers} addUser={addUser} id={users.length} curUser={default_record} editMode={editMode} handleAddUserClick={handleAddUserClick} />
         </div>
         
         <TablE users={users} setUsers={setUsers} page={page} setPage={setPage} filteredList={filteredList} handleEdit={handleEdit} setEditMode={setEditMode} />
@@ -123,7 +123,7 @@ function Layout() {
       : (
         
       <div className='first-part'>
-       <ModaL isButtonClicked={isButtonClicked} open={open} handleClose={handleClose} users={users} setUsers={setUsers} addUser={addUser} id={users.length} curUser={default_record} editMode={editMode} handleAddUserClick={handleAddUserClick} />
+       <ModaL  open={open} handleClose={handleClose} users={users} setUsers={setUsers} addUser={addUser} id={users.length} curUser={default_record} editMode={editMode} handleAddUserClick={handleAddUserClick} />
      </div>)}
 
 
