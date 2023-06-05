@@ -1,23 +1,12 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
 import StepperContainer from "../Pages/form/StepperContainer";
 import { Box, Button, Modal } from "@mui/material";
 import "../css/ModaL.css";
-import { TModaLProps } from "../Types/ModaL";
+import { HomeContext } from "../Contexts/HomeContextProvider";
+import { useContext } from "react";
 
+export default function ModaL() {
+  const { handleClose, handleAddUserClick, open } = useContext(HomeContext);
 
-
-
-export default function ModaL({
-  addUser,
-  id,
-  curUser,
-  editMode,
-  users,
-  setUsers,
-  handleClose,
-  open,
-  handleAddUserClick,
-}:TModaLProps) {
   return (
     <div>
       {!open && (
@@ -36,15 +25,7 @@ export default function ModaL({
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
         <Box className="modalBoxStyle">
-          <StepperContainer
-            users={users}
-            setUsers={setUsers}
-            addUser={addUser}
-            id={users.length}
-            curUser={curUser}
-            editMode={editMode}
-            handleClose={handleClose}
-          />
+          <StepperContainer />
         </Box>
       </Modal>
     </div>

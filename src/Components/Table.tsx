@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import { Button, Modal } from "@mui/material";
 import { Pagination } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -7,19 +7,19 @@ import moment from "moment";
 import "../css/Table.css";
 import { TTablEProps } from "../Types/Table";
 import { TUser } from "../Types/User";
+import { HomeContext } from "../Contexts/HomeContextProvider";
 
+export const TablE = () => {
+  const {
+    users,
+    setUsers,
+    page,
+    setPage,
+    filteredList,
+    handleEdit,
+    setEditMode,
+  } = useContext(HomeContext);
 
-
-  
-export const TablE = ({
-  users,
-  setUsers,
-  page,
-  setPage,
-  filteredList,
-  handleEdit,
-  setEditMode,
-}:TTablEProps) => {
   const [formData, setFormData] = useState<TUser | null>(null);
   const [deleteMode, setDeleteMode] = useState(false);
 
@@ -36,7 +36,7 @@ export const TablE = ({
     setPage(newPage);
   };
 
-  const handleDelete = (user:TUser) => {
+  const handleDelete = (user: TUser) => {
     setFormData(user);
     setDeleteMode(true);
   };
@@ -77,7 +77,10 @@ export const TablE = ({
                   {user.PersonalDetails && user.PersonalDetails.lastName}
                 </div>
                 <div className="col col-3" data-label="age">
-                  {moment().diff(user.PersonalDetails && user.PersonalDetails.dob, "years")}
+                  {moment().diff(
+                    user.PersonalDetails && user.PersonalDetails.dob,
+                    "years"
+                  )}
                 </div>
                 <div className="col col-4" data-label="gender">
                   {user.PersonalDetails && user.PersonalDetails.gender}
@@ -126,10 +129,10 @@ export const TablE = ({
                 transform: "translate(-50%, -50%)",
               }}
             >
-              <p  style={{textAlign:'center'}}>
+              <p style={{ textAlign: "center" }}>
                 Are you sure you want to delete this form data?
               </p>
-              <div  style={{textAlign:'center'}}>
+              <div style={{ textAlign: "center" }}>
                 <Button onClick={handleConfirmDelete} color="inherit">
                   Yes
                 </Button>
