@@ -1,13 +1,10 @@
-import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import  {debounce}  from 'lodash';
+import { TSearchFilterProps } from '../Types/Filter';
 
-interface SearchFilterProps {
-  setPage: Dispatch<SetStateAction<number>>;
-  filter: string;
-  setFilter: Dispatch<SetStateAction<string>>;
-}
 
-function SearchFilter({ setPage, filter, setFilter }:SearchFilterProps) {
+
+function SearchFilter({ setPage, filter, setFilter }:TSearchFilterProps) {
   const [searchValue, setSearchValue] = useState(filter);
 
   const handleFilterChange = debounce((value: string) => {

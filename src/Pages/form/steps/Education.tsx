@@ -10,63 +10,27 @@ import {
 import * as Yup from "yup";
 import { Add as AddIcon, Remove as RemoveIcon } from "@mui/icons-material";
 import { useEffect } from "react";
-import { EducationData, EducationFormValues } from "../../../Types";
+import { EducationValidationSchema } from "../../../ValidationSchema/Education";
+import { TEducationData, TEducationFormValues, TEducationProps } from "../../../Types/Education";
 
 
 
 // Error object type
-type FormErrors = FormikErrors<EducationFormValues>;
+type FormErrors = FormikErrors<TEducationFormValues>;
 
-const validationSchema = Yup.object().shape({
-  education: Yup.array().of(
-    Yup.object().shape({
-      courseName: Yup.string()
-        .required("Course name is required")
-        .matches(
-          /^[A-Za-z\s]+$/,
-          "Course name must only contain letters and spaces"
-        )
-        .min(2, "Course name must be at least 2 characters")
-        .max(50, "Course name must be at most 50 characters"),
-      university: Yup.string()
-        .required("university name is required")
-        .matches(
-          /^[A-Za-z\s]+$/,
-          "university name must only contain letters and spaces"
-        )
-        .min(2, "university name must be at least 2 characters")
-        .max(50, "university name must be at most 50 characters"),
-      percentage: Yup.number()
-        .typeError("Percentage must be a number")
-        .min(0, "Percentage must be greater than or equal to 0")
-        .max(100, "Percentage must be less than or equal to 100")
-        .required("Percentage is required"),
-      passingYear: Yup.number()
-        .typeError("Passing year must be a number")
-        .integer("Passing year must be an integer")
-        .min(1900, "Passing year must be after 1900")
-        .max(new Date().getFullYear(), "Passing year cannot be in the future")
-        .required("Passing year is required"),
-    })
-  ),
-});
 
-const initialValues: EducationData = {
+const initialValues: TEducationData = {
   education: [
     { courseName: "", university: "", percentage: "", passingYear: "" },
   ],
 };
 
-interface EducationProps {
-  formData?: typeof initialValues;
-  onError: (errors: object) => void;
-  onSuccess: (data: typeof initialValues, node: string) => void;
-}
 
-export const Education = ({ formData, onError, onSuccess }: EducationProps) => {
-  const formik = useFormik<EducationData>({
+
+export const Education = ({ formData, onError, onSuccess }: TEducationProps) => {
+  const formik = useFormik<TEducationData>({
     initialValues: formData || initialValues,
-    validationSchema: validationSchema,
+    validationSchema: EducationValidationSchema,
     onSubmit: () => {},
   });
 
@@ -100,7 +64,7 @@ export const Education = ({ formData, onError, onSuccess }: EducationProps) => {
     <form onSubmit={handleSubmit}>
       <Formik
         initialValues={formData || initialValues}
-        validationSchema={validationSchema}
+        validationSchema={EducationValidationSchema}
         onSubmit={() => {}}
       >
         <Grid

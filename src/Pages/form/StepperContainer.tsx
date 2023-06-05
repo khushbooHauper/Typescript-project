@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -9,26 +9,23 @@ import { PersonalDetails } from './steps/PersonalDetails';
 import { Education } from './steps/Education';
 import { Experience } from './steps/Experience';
 import { BankDetails } from './steps/BankDetails';
-import { BankDetailsData, EducationData, ExperienceData, PersonalDetailsData, User } from '../../Types';
+import { TStepperContainerProps } from '../../Types/StepperContainer';
+import { TUser } from '../../Types/User';
+import { TPersonalDetailsData } from '../../Types/PersonalDetails';
+import { TBankDetailsData } from '../../Types/BankDetails';
+import { TEducationData } from '../../Types/Education';
+import { TExperienceData } from '../../Types/Experience';
 
   
   
-  interface StepperContainerProps {
-    addUser: (user: User) => void;
-    handleClose: () => void;
-    id: number;
-    curUser: User | null | {};
-    editMode: boolean;
-    users: User[];
-    setUsers: Dispatch<SetStateAction<User[]>>;
-  }
+ 
 
 const steps = ['PersonalDetails', 'BankDetails', 'Education', 'Experience'];
 
-export default function StepperContainer({ addUser, handleClose, id, curUser,editMode ,users,setUsers}:StepperContainerProps) {
+export default function StepperContainer({ addUser, handleClose, id, curUser,editMode ,users,setUsers}:TStepperContainerProps) {
 
     ///+++++
-    const [curRecord, setCurRecord] = useState<User | {}>(curUser || {});
+    const [curRecord, setCurRecord] = useState<TUser | {}>(curUser || {});
 
     const [allowedNext, setAllowNext] = useState<boolean>(false);
     const [activeStep, setActiveStep] = useState<number>(0);
@@ -47,10 +44,10 @@ export default function StepperContainer({ addUser, handleClose, id, curUser,edi
         // })
         
         switch (activeStep) {
-            case 0:(curRecord as User).PersonalDetails = data as PersonalDetailsData; break;
-            case 1: (curRecord as User).BankDetails = data as BankDetailsData; break;
-            case 2: (curRecord as User).Education = data as EducationData; break;
-            case 3: (curRecord as User).Experience = data as ExperienceData; break;
+            case 0:(curRecord as TUser).PersonalDetails = data as TPersonalDetailsData; break;
+            case 1: (curRecord as TUser).BankDetails = data as TBankDetailsData; break;
+            case 2: (curRecord as TUser).Education = data as TEducationData; break;
+            case 3: (curRecord as TUser).Experience = data as TExperienceData; break;
 
         }
         console.log("on success got this data", data)
@@ -67,9 +64,9 @@ export default function StepperContainer({ addUser, handleClose, id, curUser,edi
     const handleNext = () => {
         if (allowedNext) {
             if (activeStep === steps.length - 1) {
-                const newUser:User = { ...curRecord, id: id + 1 };
+                const newUser:TUser = { ...curRecord, id: id + 1 };
                 setCurRecord(newUser);
-                addUser(curRecord as User);
+                addUser(curRecord as TUser);
                 handleClose()
             } else {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -81,9 +78,9 @@ export default function StepperContainer({ addUser, handleClose, id, curUser,edi
 
     const handleUpdate = () => {
         const updatedUsers =users && users.map((user) =>
-            user.id ===  (curRecord as User).id ? curRecord : user
+            user.id ===  (curRecord as TUser).id ? curRecord : user
         );
-        setUsers(updatedUsers as User[]);
+        setUsers(updatedUsers as TUser[]);
         localStorage.setItem('users', JSON.stringify(updatedUsers));
         handleClose()
     };
@@ -116,22 +113,22 @@ export default function StepperContainer({ addUser, handleClose, id, curUser,edi
                             return <PersonalDetails
                                 onSuccess={onSuccess}
                                 onError={onError}
-                                formData={(curRecord as User)?.PersonalDetails as PersonalDetailsData} />;
+                                formData={(curRecord as TUser)?.PersonalDetails as TPersonalDetailsData} />;
                         case 1:
                             return <BankDetails
                                 onSuccess={onSuccess}
                                 onError={onError}
-                                formData={(curRecord as User)?.BankDetails as BankDetailsData} />;
+                                formData={(curRecord as TUser)?.BankDetails as TBankDetailsData} />;
                         case 2:
                             return <Education
                                 onSuccess={onSuccess}
                                 onError={onError}
-                                formData={(curRecord as User)?.Education as EducationData} />;
+                                formData={(curRecord as TUser)?.Education as TEducationData} />;
                         case 3:
                             return <Experience
                                 onSuccess={onSuccess}
                                 onError={onError}
-                                formData={(curRecord as User)?.Experience as ExperienceData}
+                                formData={(curRecord as TUser)?.Experience as TExperienceData}
                             />;
                         default:
                             return null;

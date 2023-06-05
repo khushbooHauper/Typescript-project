@@ -1,7 +1,8 @@
 import { Button, Grid, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import { useEffect } from "react";
-import * as Yup from "yup";
+import { BankDetailsValidationSchema } from "../../../ValidationSchema/BankDetails";
+import { TBankDetailsProps } from "../../../Types/BankDetails";
 
 
 const initialValues = {
@@ -11,33 +12,11 @@ const initialValues = {
   panCard: "",
 
 };
-interface BankDetailsProps {
-  formData: typeof initialValues;
-  onError: (errors: object) => void;
-  onSuccess: (data: object, node: string) => void;
-}
-export const BankDetails : React.FC<BankDetailsProps>= ({ formData, onError, onSuccess }) => {
+
+export const BankDetails= ({ formData, onError, onSuccess }:TBankDetailsProps) => {
   const formik = useFormik({
     initialValues: formData || initialValues,
-    validationSchema: Yup.object({
-      bank: Yup.string()
-        .required('Bank Name is required')
-        .matches(/^[A-Za-z\s]+$/, 'Bank Name should only contain letters and spaces')
-        .min(3, 'Bank Name should be at least 3 characters')
-        .max(50, 'Bank Name should not exceed 50 characters'),
-      accountNumber: Yup.string()
-        .required('Account Number is required')
-        .matches(/^\d{6,12}$/, 'Account Number should be a numeric value between 6 and 12 digits'),
-      ifsc: Yup.string()
-        .required('ifsc code is required')
-        .matches(/^[A-Za-z0-9]+$/, 'ifsc code should only contain letters and numbers')
-        .min(6, 'ifsc code should be at least 6 characters')
-        .max(20, 'ifsc code should not exceed 20 characters'),
-      panCard: Yup.string()
-        .required('PAN Card Number is required')
-        .matches(/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/, 'Invalid PAN Card Number format'),
-
-    }),
+    validationSchema: BankDetailsValidationSchema,
     onSubmit: () => {}
   });
 

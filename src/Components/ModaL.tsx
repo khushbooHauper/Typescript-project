@@ -2,20 +2,10 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import StepperContainer from "../Pages/form/StepperContainer";
 import { Box, Button, Modal } from "@mui/material";
 import "../css/ModaL.css";
-import { User } from "../Types";
+import { TModaLProps } from "../Types/ModaL";
 
 
-interface ModaLProps {
-    addUser: (user: User) => void;
-    id: number;
-    curUser: User | null | {};
-    editMode: boolean;
-    users: User[];
-    setUsers: Dispatch<SetStateAction<User[]>>;
-    handleClose: () => void;
-    open: boolean;
-    handleAddUserClick: () => void;
-  }
+
 
 export default function ModaL({
   addUser,
@@ -27,7 +17,7 @@ export default function ModaL({
   handleClose,
   open,
   handleAddUserClick,
-}:ModaLProps) {
+}:TModaLProps) {
   return (
     <div>
       {!open && (

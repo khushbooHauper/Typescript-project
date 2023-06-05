@@ -5,18 +5,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import moment from "moment";
 import "../css/Table.css";
-import { User } from "../Types";
+import { TTablEProps } from "../Types/Table";
+import { TUser } from "../Types/User";
 
 
-interface TablEProps {
-    users: User[];
-    setUsers: Dispatch<SetStateAction<User[]>>;
-    page: number;
-    setPage: Dispatch<SetStateAction<number>>;
-    filteredList: User[];
-    handleEdit: (user: User) => void;
-    setEditMode: Dispatch<SetStateAction<boolean>>;
-  }
+
   
 export const TablE = ({
   users,
@@ -26,8 +19,8 @@ export const TablE = ({
   filteredList,
   handleEdit,
   setEditMode,
-}:TablEProps) => {
-  const [formData, setFormData] = useState<User | null>(null);
+}:TTablEProps) => {
+  const [formData, setFormData] = useState<TUser | null>(null);
   const [deleteMode, setDeleteMode] = useState(false);
 
   const ITEMS_PER_PAGE = 5;
@@ -43,7 +36,7 @@ export const TablE = ({
     setPage(newPage);
   };
 
-  const handleDelete = (user:User) => {
+  const handleDelete = (user:TUser) => {
     setFormData(user);
     setDeleteMode(true);
   };

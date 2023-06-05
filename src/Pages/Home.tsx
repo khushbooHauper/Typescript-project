@@ -4,21 +4,22 @@ import SearchFilter from '../Components/Filter';
 import ModaL from '../Components/ModaL';
 import '../css/Layout.css';
 import { TablE } from '../Components/Table';
-import { PersonalDetailsData, User } from '../Types';
+import { TUser } from '../Types/User';
+import { TPersonalDetailsData } from '../Types/PersonalDetails';
 
 
 
 
-function Layout() {
+function Home() {
   const storedUsers = localStorage.getItem('users');
   const hasStoredUsers = storedUsers !== null;
   const [hasUsers, setHasUsers] = useState<boolean>(hasStoredUsers);
-  const [users, setUsers] = useState<User[]>(() => {
+  const [users, setUsers] = useState<TUser[]>(() => {
     return hasStoredUsers ? JSON.parse(storedUsers) : [];
   });
   const [page, setPage] = useState<number>(1);
   const [filter, setFilter] = useState<string>("");
-  const [curRecord, setCurRecord] = useState<User | null>(null);
+  const [curRecord, setCurRecord] = useState<TUser | null>(null);
   const [showTable, setShowTable] = useState<boolean>(false);
   const [showFilter, setShowFilter] = useState<boolean>(false);
   const [isButtonClicked, setIsButtonClicked] = useState<boolean>(false);
@@ -40,11 +41,11 @@ function Layout() {
 
 
 
-  const filteredList = users && users.filter((user:User) => {
+  const filteredList = users && users.filter((user:TUser) => {
     const personalDetails = user.PersonalDetails;
-    const age = moment().diff((personalDetails as PersonalDetailsData).dob, 'years');
+    const age = moment().diff((personalDetails as TPersonalDetailsData).dob, 'years');
 
-    return Object.values(personalDetails as PersonalDetailsData).some((value) =>
+    return Object.values(personalDetails as TPersonalDetailsData).some((value) =>
       value && value.toString().toLowerCase().includes(filter.toLowerCase())
     ) || age.toString().toLowerCase().includes(filter.toLowerCase());
   });
@@ -57,7 +58,7 @@ function Layout() {
 
 
 
-  const addUser = (user:User) => {
+  const addUser = (user:TUser) => {
     const updatedUsers = [...users]; // Create a deep copy of the users array
 
     if (user.id === users.length + 1) {
@@ -89,7 +90,7 @@ function Layout() {
     return curRecord;
   }, [curRecord, users])
 
-  const handleEdit = useCallback((user:User) => {
+  const handleEdit = useCallback((user:TUser) => {
     setOpen(true);
     setEditMode(true);
     setCurRecord(user);
@@ -131,4 +132,4 @@ function Layout() {
   )
 }
 
-export default Layout
+export default Home
