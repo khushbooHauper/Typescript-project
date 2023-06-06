@@ -85,10 +85,10 @@ export const Experience = ({
             <FieldArray
               name="experience"
               validateOnChange={false}
-              render={(arrayHelpers) => (
+              render={() => (
                 <Grid item xs={12}>
                   <div>
-                    {values.experience.map((experience, index) => (
+                    {values.experience.map((exp, index) => (
                       <Grid container key={index} spacing={2}>
                         <Grid item xs={12}>
                           <Typography variant="h6">
@@ -102,7 +102,7 @@ export const Experience = ({
                             name={`experience.${index}.company`}
                             label="company Name"
                             variant="outlined"
-                            value={values.experience[index].company || ""}
+                            value={exp.company || ""}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             type="text"
@@ -135,7 +135,7 @@ export const Experience = ({
                             name={`experience.${index}.designation`}
                             label="designation"
                             variant="outlined"
-                            value={values.experience[index].designation || ""}
+                            value={exp.designation || ""}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             type="text"
@@ -170,7 +170,7 @@ export const Experience = ({
                             name={`experience.${index}.joiningDate`}
                             label="joiningDate"
                             variant="outlined"
-                            value={values.experience[index].joiningDate || ""}
+                            value={exp.joiningDate || ""}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             id="date"
@@ -209,7 +209,7 @@ export const Experience = ({
                             name={`experience.${index}.leavingDate`}
                             label="leavingDate"
                             variant="outlined"
-                            value={values.experience[index].leavingDate || ""}
+                            value={exp.leavingDate || ""}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             id="date"

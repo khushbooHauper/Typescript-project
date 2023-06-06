@@ -1,10 +1,27 @@
-import { Button, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  TextFieldProps,
+} from "@mui/material";
 import { useFormik } from "formik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PersonnalDetailsValidationSchema } from "../../../ValidationSchema/PersonalDetails";
-import moment from 'moment';
-import { TPersonalDetailsProps } from "../../../Types/PersonalDetails";
-
+import moment from "moment";
+import {
+  TPersonalDetailsProps,
+  TPersonalDetailsData,
+} from "../../../Types/PersonalDetails";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import { DatePicker} from "@mui/lab";
 
 const initialValues = {
   firstName: "",
@@ -20,23 +37,28 @@ const initialValues = {
   gender: "",
 };
 
-
-export const PersonalDetails = ({ formData, onError, onSuccess }:TPersonalDetailsProps) => {
-const formik = useFormik({
+export const PersonalDetails = ({
+  formData,
+  onError,
+  onSuccess,
+}: TPersonalDetailsProps) => {
+  const formik = useFormik<TPersonalDetailsData>({
     initialValues: formData || initialValues,
-    validationSchema:PersonnalDetailsValidationSchema,
-    onSubmit: () => {}
+    validationSchema: PersonnalDetailsValidationSchema,
+    onSubmit: () => {},
   });
 
   useEffect(() => {
-
     if (formik.isValidating) {
       // Form validation is in progress, do nothing
       return;
     }
 
-    if (formik.isValid && !Object.values(formik.values).some((value) => value === '')) {
-      onSuccess(formik.values, 'PersonalDetails');
+    if (
+      formik.isValid &&
+      !Object.values(formik.values).some((value) => value === "")
+    ) {
+      onSuccess(formik.values, "PersonalDetails");
     } else {
       onError(formik.errors);
     }
@@ -71,7 +93,7 @@ const formik = useFormik({
             helperText={formik.touched.lastName && formik.errors.lastName}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        {/* <Grid item xs={12} sm={6}>
           <TextField
             name="dob"
             label="DOB"
@@ -85,31 +107,73 @@ const formik = useFormik({
             error={formik.touched.dob && Boolean(formik.errors.dob)}
             helperText={formik.touched.dob && formik.errors.dob}
             inputProps={{
-              max: moment().subtract(18, 'years').format('YYYY-MM-DD'), // Set the maximum date to 18 years ago
-              min: moment().subtract(60, 'years').format('YYYY-MM-DD'), // Set the minimum date to 60 years ago
+              max: moment().subtract(18, "years").format("YYYY-MM-DD"), // Set the maximum date to 18 years ago
+              min: moment().subtract(60, "years").format("YYYY-MM-DD"), // Set the minimum date to 60 years ago
             }}
           />
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} sm={6}>
-          <FormControl variant="outlined" fullWidth error={formik.touched.gender && Boolean(formik.errors.gender)}>
-            <InputLabel id="gender-label" style={{ color: (formik.touched.gender && formik.errors.gender) ? '#d32f2f' : '#919191' }}>
+          <LocalizationProvider dateAdapter={AdapterMoment}>
+            <DatePicker
+              label="Helper text example"
+              format="DD/MM/YYYY"
+              value={formik.values.dob}
+              onChange={formik.handleChange}
+            />
+            {/* <DatePicker
+                label="DOB"
+               value={formik.values.dob || ''}
+                slotProps={{
+                  textField: {
+                   
+                    onChange: formik.handleChange,
+                    error: formik.touched.dob && Boolean(formik.errors.dob),
+                    helperText: formik.touched.dob && formik.errors.dob,
+                  },
+                }}
+              /> */}
+          </LocalizationProvider>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <FormControl
+            variant="outlined"
+            fullWidth
+            error={formik.touched.gender && Boolean(formik.errors.gender)}
+          >
+            <InputLabel
+              id="gender-label"
+              style={{
+                color:
+                  formik.touched.gender && formik.errors.gender
+                    ? "#d32f2f"
+                    : "#919191",
+              }}
+            >
               Gender
             </InputLabel>
             <Select
               labelId="gender-label"
               name="gender"
               label="Gender"
-              value={formik.values.gender}
+              value={formik.values.gender || "male"}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              style={{ color: (formik.touched.gender && formik.errors.gender) ? '#d32f2f' : 'black' }}
+              style={{
+                color:
+                  formik.touched.gender && formik.errors.gender
+                    ? "#d32f2f"
+                    : "black",
+              }}
             >
               <MenuItem value="male">Male</MenuItem>
               <MenuItem value="female">Female</MenuItem>
               <MenuItem value="others">Others</MenuItem>
             </Select>
             {formik.touched.gender && formik.errors.gender && (
-              <FormHelperText style={{ color: '#d32f2f' }}>{formik.errors.gender}</FormHelperText>
+              <FormHelperText style={{ color: "#d32f2f" }}>
+                {formik.errors.gender}
+              </FormHelperText>
             )}
           </FormControl>
         </Grid>
@@ -150,8 +214,8 @@ const formik = useFormik({
             onBlur={formik.handleBlur}
             error={formik.touched.address && Boolean(formik.errors.address)}
             helperText={formik.touched.address && formik.errors.address}
-            multiline  // add this prop to enable multiline input
-            rows={2}   // add this prop to set the number of rows to show
+            multiline // add this prop to enable multiline input
+            rows={2} // add this prop to set the number of rows to show
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -207,7 +271,6 @@ const formik = useFormik({
           />
         </Grid>
       </Grid>
-
     </form>
   );
 };

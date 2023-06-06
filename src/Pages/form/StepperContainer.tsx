@@ -72,13 +72,10 @@ export default function StepperContainer() {
   const handleNext = () => {
     if (allowedNext) {
       if (activeStep === steps.length - 1) {
-        let newId = users.length + 1
-        const newUser: TUser = { ...curRecord, id: newId };
-        setCurRecord(newUser);
         addUser(curRecord as TUser);
         handleClose();
       } else {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setActiveStep(prevActiveStep => prevActiveStep + 1);
       }
     }
   };

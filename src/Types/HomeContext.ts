@@ -20,5 +20,5 @@ export type THomeContextProps = {
   };
 
   export type THomeContextProviderProps = {
-    children: ReactNode;
+    children?: ReactNode;
   };

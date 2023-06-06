@@ -76,11 +76,11 @@ export const Education = ({ formData, onError, onSuccess }: TEducationProps) => 
             <FieldArray
               name="education"
               validateOnChange={false}
-              render={(arrayHelpers) => (
+              render={() => (
                 <Grid item xs={12}>
                   <div>
                     {values.education &&
-                      values.education.map((education, index) => (
+                      values.education.map((edu, index) => (
                         <Grid container key={index} spacing={2}>
                           <Grid item xs={12}>
                             <Typography variant="h6">
@@ -95,7 +95,7 @@ export const Education = ({ formData, onError, onSuccess }: TEducationProps) => 
                               name={`education.${index}.courseName`}
                               label="Course Name"
                               variant="outlined"
-                              value={values.education[index].courseName || ""}
+                              value={edu.courseName || ""}
                               onChange={handleChange}
                               onBlur={handleBlur}
                               error={
@@ -129,7 +129,7 @@ export const Education = ({ formData, onError, onSuccess }: TEducationProps) => 
                               name={`education.${index}.university`}
                               label="University"
                               variant="outlined"
-                              value={values.education[index].university || ""}
+                              value={edu.university || ""}
                               onChange={handleChange}
                               onBlur={handleBlur}
                               error={
@@ -164,7 +164,7 @@ export const Education = ({ formData, onError, onSuccess }: TEducationProps) => 
                               name={`education.${index}.percentage`}
                               label="Percentage"
                               variant="outlined"
-                              value={values.education[index].percentage || ""}
+                              value={edu.percentage || ""}
                               onChange={handleChange}
                               onBlur={handleBlur}
                               error={
@@ -198,7 +198,7 @@ export const Education = ({ formData, onError, onSuccess }: TEducationProps) => 
                               name={`education.${index}.passingYear`}
                               label="Passing Year"
                               variant="outlined"
-                              value={values.education[index].passingYear || ""}
+                              value={edu.passingYear || ""}
                               onChange={handleChange}
                               onBlur={handleBlur}
                               error={

@@ -49,6 +49,11 @@ const HomeContextProvider = ({ children }: THomeContextProviderProps) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
  
+
+  useEffect(() => {
+    setUsers(users);
+  }, [users]);
+  
   const handleOpen = () => {
     setOpen(true);
     setIsButtonClicked(true);
@@ -77,40 +82,61 @@ const HomeContextProvider = ({ children }: THomeContextProviderProps) => {
       );
     });
 
-  useEffect(() => {
-    setUsers(users);
-  }, [users]);
+ 
 
-  const addUser = (user: TUser) => {
-    const updatedUsers = [...users]; // Create a deep copy of the users array
-   
-    if (user.id === users.length + 1) {
-      updatedUsers.push(user); // Add the new user to the copied array
-    } else {
-      let index = updatedUsers.findIndex((t) => t.id === user.id);
-      if (index >= 0) {
-        updatedUsers[index] = user; // Update the specific user in the copied array
+    // const addUser = (user: TUser) => {
+    //   const highestId = Math.max(...users.map(user => user.id));
+    //   const newId = highestId + 1;
+    //   const newUser: TUser = { ...user, id: newId };
+      
+    //   const updatedUsers = [...users, newUser];
+      
+    //   setUsers(updatedUsers);
+    //   localStorage.setItem("users", JSON.stringify(updatedUsers));
+    //   setOpen(false);
+    //   setShowTable(true);
+    //   setShowFilter(true);
+    // };
+  
+    const addUser = (user: TUser) => {
+      let updatedUsers: TUser[] = [...users]; // Declare the variable here
+    
+      const existingUserIndex = updatedUsers.findIndex((u) => u.id === user.id);
+    
+      if (existingUserIndex !== -1) {
+        // Update existing user
+        updatedUsers[existingUserIndex] = user;
       } else {
-        alert("Something went wrong");
-        return;
+        // Add new user
+        const highestId = Math.max(...updatedUsers.map((u) => u.id));
+        const newId = highestId + 1;
+        const newUser: TUser = { ...user, id: newId };
+        updatedUsers = [...updatedUsers, newUser]; // Assign the updated array
       }
-    }
-
-    setUsers(updatedUsers); // Update the state with the copied array
-    localStorage.setItem("users", JSON.stringify(updatedUsers)); // Save the copied array in local storage
-    setOpen(false);
-    setShowTable(true);
-    setShowFilter(true);
-  };
-
-  let default_record = useMemo(() => {
-    if (curRecord === null) {
-      return {
-        id: users.length + 1,
-      };
-    }
-    return curRecord;
-  }, [curRecord, users]);
+    
+      setUsers(updatedUsers);
+      localStorage.setItem("users", JSON.stringify(updatedUsers));
+      setOpen(false);
+      setShowTable(true);
+      setShowFilter(true);
+    };
+    
+    
+    let default_record = useMemo(() => {
+      const highestId = Math.max(...users.map(user => user.id));
+      const newId = highestId + 1;
+      
+      if (curRecord === null ) {
+        return {
+          id: newId,
+        };
+      }
+      
+      return curRecord;
+    }, [curRecord, users]);
+    
+  
+  
 
   const handleEdit = useCallback((user: TUser) => {
     setOpen(true);
