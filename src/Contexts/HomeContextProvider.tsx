@@ -48,12 +48,11 @@ const HomeContextProvider = ({ children }: THomeContextProviderProps) => {
   const [isButtonClicked, setIsButtonClicked] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
- 
 
   useEffect(() => {
     setUsers(users);
   }, [users]);
-  
+
   const handleOpen = () => {
     setOpen(true);
     setIsButtonClicked(true);
@@ -62,6 +61,7 @@ const HomeContextProvider = ({ children }: THomeContextProviderProps) => {
   const handleClose = () => {
     setOpen(false);
     setIsButtonClicked(false);
+    window.location.reload();
   };
 
   const filteredList =
@@ -82,61 +82,55 @@ const HomeContextProvider = ({ children }: THomeContextProviderProps) => {
       );
     });
 
- 
+  // const addUser = (user: TUser) => {
+  //   const highestId = Math.max(...users.map(user => user.id));
+  //   const newId = highestId + 1;
+  //   const newUser: TUser = { ...user, id: newId };
 
-    // const addUser = (user: TUser) => {
-    //   const highestId = Math.max(...users.map(user => user.id));
-    //   const newId = highestId + 1;
-    //   const newUser: TUser = { ...user, id: newId };
-      
-    //   const updatedUsers = [...users, newUser];
-      
-    //   setUsers(updatedUsers);
-    //   localStorage.setItem("users", JSON.stringify(updatedUsers));
-    //   setOpen(false);
-    //   setShowTable(true);
-    //   setShowFilter(true);
-    // };
-  
-    const addUser = (user: TUser) => {
-      let updatedUsers: TUser[] = [...users]; // Declare the variable here
-    
-      const existingUserIndex = updatedUsers.findIndex((u) => u.id === user.id);
-    
-      if (existingUserIndex !== -1) {
-        // Update existing user
-        updatedUsers[existingUserIndex] = user;
-      } else {
-        // Add new user
-        const highestId = Math.max(...updatedUsers.map((u) => u.id));
-        const newId = highestId + 1;
-        const newUser: TUser = { ...user, id: newId };
-        updatedUsers = [...updatedUsers, newUser]; // Assign the updated array
-      }
-    
-      setUsers(updatedUsers);
-      localStorage.setItem("users", JSON.stringify(updatedUsers));
-      setOpen(false);
-      setShowTable(true);
-      setShowFilter(true);
-    };
-    
-    
-    let default_record = useMemo(() => {
-      const highestId = Math.max(...users.map(user => user.id));
+  //   const updatedUsers = [...users, newUser];
+
+  //   setUsers(updatedUsers);
+  //   localStorage.setItem("users", JSON.stringify(updatedUsers));
+  //   setOpen(false);
+  //   setShowTable(true);
+  //   setShowFilter(true);
+  // };
+
+  const addUser = (user: TUser) => {
+    let updatedUsers: TUser[] = [...users]; // Declare the variable here
+
+    const existingUserIndex = updatedUsers.findIndex((u) => u.id === user.id);
+
+    if (existingUserIndex !== -1) {
+      // Update existing user
+      updatedUsers[existingUserIndex] = user;
+    } else {
+      // Add new user
+      const highestId = Math.max(...updatedUsers.map((u) => u.id));
       const newId = highestId + 1;
-      
-      if (curRecord === null ) {
-        return {
-          id: newId,
-        };
-      }
-      
-      return curRecord;
-    }, [curRecord, users]);
-    
-  
-  
+      const newUser: TUser = { ...user, id: newId };
+      updatedUsers = [...updatedUsers, newUser]; // Assign the updated array
+    }
+
+    setUsers(updatedUsers);
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    setOpen(false);
+    setShowTable(true);
+    setShowFilter(true);
+  };
+
+  let default_record = useMemo(() => {
+    const highestId = Math.max(...users.map((user) => user.id));
+    const newId = highestId + 1;
+
+    if (curRecord === null) {
+      return {
+        id: newId,
+      };
+    }
+
+    return curRecord;
+  }, [curRecord, users]);
 
   const handleEdit = useCallback((user: TUser) => {
     setOpen(true);

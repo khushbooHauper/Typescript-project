@@ -10,15 +10,18 @@ import {
 import { Add as AddIcon, Remove as RemoveIcon } from "@mui/icons-material";
 import { useEffect } from "react";
 import { ExperienceValidationSchema } from "../../../ValidationSchema/Experience";
-import { TExperienceData, TExperienceFormValues, TExperienceProps } from "../../../Types/Experience";
-
-
-
+import {
+  TExperienceData,
+  TExperienceFormValues,
+  TExperienceProps,
+} from "../../../Types/Experience";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import moment from "moment";
 
 // Error object type
 type FormErrors = FormikErrors<TExperienceFormValues>;
-
-
 
 const initialValues: TExperienceData = {
   experience: [
@@ -30,7 +33,6 @@ const initialValues: TExperienceData = {
     },
   ],
 };
-
 
 export const Experience = ({
   formData,
@@ -164,7 +166,7 @@ export const Experience = ({
                             }
                           />
                         </Grid>
-                        <Grid item xs={6}>
+                        {/* <Grid item xs={6}>
                           <TextField
                             fullWidth
                             name={`experience.${index}.joiningDate`}
@@ -241,7 +243,171 @@ export const Experience = ({
                                 : ""
                             }
                           />
+                        </Grid> */}
+                        <Grid item xs={12} sm={6}>
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                              label="joiningDate"
+                              format="MM-DD-YYYY"
+                              value={
+                                exp.joiningDate
+                                  ? moment(exp.joiningDate, "YYYY-MM-DD")
+                                  : null
+                              }
+                              onChange={(joiningDate) => {
+                                console.log(
+                                  "Selected joiningDate:",
+                                  joiningDate
+                                );
+                                const formattedDate = joiningDate
+                                  ? joiningDate.format("YYYY-MM-DD")
+                                  : "";
+                                formik.setFieldValue(
+                                  `experience.${index}.joiningDate`,
+                                  formattedDate
+                                );
+                              }}
+                              slotProps={{
+                                textField: {
+                                  error:
+                                    errors.experience &&
+                                    errors.experience[index] &&
+                                    (errors.experience[index] as FormErrors)
+                                      ?.joiningDate
+                                      ? true
+                                      : false,
+                                  helperText:
+                                    errors.experience &&
+                                    errors.experience[index] &&
+                                    (errors.experience[index] as FormErrors)
+                                      ?.joiningDate ? (
+                                      <span
+                                        style={{
+                                          color:
+                                            errors.experience &&
+                                            errors.experience[index] &&
+                                            (
+                                              errors.experience[
+                                                index
+                                              ] as FormErrors
+                                            )?.joiningDate
+                                              ? "#d32f2f"
+                                              : "#919191",
+                                        }}
+                                      >
+                                        {
+                                          (
+                                            errors.experience[
+                                              index
+                                            ] as FormErrors
+                                          )?.joiningDate
+                                        }
+                                      </span>
+                                    ) : (
+                                      ""
+                                    ),
+                                  style: {
+                                    width: "100%", // Adjust the width as per your requirements
+                                  },
+                                  InputLabelProps: {
+                                    style: {
+                                      color:
+                                        errors.experience &&
+                                        errors.experience[index] &&
+                                        (errors.experience[index] as FormErrors)
+                                          ?.joiningDate
+                                          ? "#d32f2f"
+                                          : "#919191",
+                                    },
+                                  },
+                                },
+                              }}
+                            />
+                          </LocalizationProvider>
                         </Grid>
+
+                        <Grid item xs={12} sm={6}>
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                              label="leavingDate"
+                              format="MM-DD-YYYY"
+                              value={
+                                exp.leavingDate
+                                  ? moment(exp.leavingDate, "YYYY-MM-DD")
+                                  : null
+                              }
+                              onChange={(leavingDate) => {
+                                console.log(
+                                  "Selected leavingDate:",
+                                  leavingDate
+                                );
+                                const formattedDate = leavingDate
+                                  ? leavingDate.format("YYYY-MM-DD")
+                                  : "";
+                                formik.setFieldValue(
+                                  `experience.${index}.leavingDate`,
+                                  formattedDate
+                                );
+                              }}
+                              slotProps={{
+                                textField: {
+                                  error:
+                                    errors.experience &&
+                                    errors.experience[index] &&
+                                    (errors.experience[index] as FormErrors)
+                                      ?.leavingDate
+                                      ? true
+                                      : false,
+                                  helperText:
+                                    errors.experience &&
+                                    errors.experience[index] &&
+                                    (errors.experience[index] as FormErrors)
+                                      ?.leavingDate ? (
+                                      <span
+                                        style={{
+                                          color:
+                                            errors.experience &&
+                                            errors.experience[index] &&
+                                            (
+                                              errors.experience[
+                                                index
+                                              ] as FormErrors
+                                            )?.leavingDate
+                                              ? "#d32f2f"
+                                              : "#919191",
+                                        }}
+                                      >
+                                        {
+                                          (
+                                            errors.experience[
+                                              index
+                                            ] as FormErrors
+                                          )?.leavingDate
+                                        }
+                                      </span>
+                                    ) : (
+                                      ""
+                                    ),
+                                  style: {
+                                    width: "100%", // Adjust the width as per your requirements
+                                  },
+                                  InputLabelProps: {
+                                    style: {
+                                      color:
+                                        errors.experience &&
+                                        errors.experience[index] &&
+                                        (errors.experience[index] as FormErrors)
+                                          ?.leavingDate
+                                          ? "#d32f2f"
+                                          : "#919191",
+                                    },
+                                  },
+                                },
+                              }}
+                            />
+                          </LocalizationProvider>
+                        </Grid>
+
                         <Grid item xs={2}>
                           {values.experience.length > 1 && (
                             <IconButton

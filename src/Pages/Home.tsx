@@ -5,7 +5,7 @@ import "../css/Layout.css";
 import { TablE } from "../Components/Table";
 import { HomeContext } from "../Contexts/HomeContextProvider";
 
-function HomeExp() {
+function Home() {
   const { users } = useContext(HomeContext);
 
   return (
@@ -28,4 +28,4 @@ function HomeExp() {
   );
 }
 
-export default HomeExp;
+export default Home;

@@ -44,7 +44,7 @@ export const PersonnalDetailsValidationSchema = Yup.object({
       .matches(/^[^\d]+$/, 'country name should not contain numbers'),
     dob: Yup.date()
       .required('Date of Birth is required')
-      .min(moment().subtract(60, 'years'), 'Date of Birth should be at most 60 years ago')
-      .max(moment().subtract(18, 'years'), 'Date of Birth should be at least 18 years ago'),
+      .min(moment().subtract(60, 'years'), 'maximum age is 60 years.')
+      .max(moment().subtract(18, 'years'), 'Candidate should be at least 18 years old.'),
     gender: Yup.string().required('Gender is required'),
   });

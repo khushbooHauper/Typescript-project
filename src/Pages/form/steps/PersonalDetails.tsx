@@ -18,10 +18,9 @@ import {
   TPersonalDetailsData,
 } from "../../../Types/PersonalDetails";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-// import { DatePicker} from "@mui/lab";
 
 const initialValues = {
   firstName: "",
@@ -113,25 +112,47 @@ export const PersonalDetails = ({
           />
         </Grid> */}
         <Grid item xs={12} sm={6}>
-          <LocalizationProvider dateAdapter={AdapterMoment}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              label="Helper text example"
-              format="DD/MM/YYYY"
-              value={formik.values.dob}
-              onChange={formik.handleChange}
-            />
-            {/* <DatePicker
-                label="DOB"
-               value={formik.values.dob || ''}
-                slotProps={{
-                  textField: {
-                   
-                    onChange: formik.handleChange,
-                    error: formik.touched.dob && Boolean(formik.errors.dob),
-                    helperText: formik.touched.dob && formik.errors.dob,
+              label="DOB"
+              format="MM-DD-YYYY"
+              value={
+                formik.values.dob
+                  ? moment(formik.values.dob, "YYYY-MM-DD")
+                  : null
+              }
+              onChange={(dob) => {
+                console.log("Selected DOB:", dob);
+                formik.setFieldValue(
+                  "dob",
+                  dob ? dob.format("YYYY-MM-DD") : ""
+                );
+              }}
+              slotProps={{
+                textField: {
+                  error: Boolean(formik.errors.dob),
+                  helperText: formik.errors.dob ? (
+                    <span
+                      style={{
+                        color: formik.errors.dob ? "#d32f2f" : "#919191",
+                      }}
+                    >
+                      {formik.errors.dob}
+                    </span>
+                  ) : (
+                    ""
+                  ),
+                  style: {
+                    width: "100%", // Adjust the width as per your requirements
                   },
-                }}
-              /> */}
+                  InputLabelProps: {
+                    style: {
+                      color: formik.errors.dob ? "#d32f2f" : "#919191",
+                    },
+                  },
+                },
+              }}
+            />
           </LocalizationProvider>
         </Grid>
 
